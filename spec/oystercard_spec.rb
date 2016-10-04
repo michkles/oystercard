@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Oystercard do
 
+    let(:station) {double :station}
+
   it 'has a balance of zero' do
     expect(subject.balance).to eq(0)
   end
@@ -10,17 +12,31 @@ describe Oystercard do
     expect(subject).not_to be_in_journey
   end
 
-  it 'can touch in' do
+describe '#touch_in' do
+
+
+  it 'records the entry station' do
     subject.top_up(1)
-    subject.touch_in
-    expect(subject).to be_in_journey
+    subject.touch_in(station)
+    expect(subject.start_station).to eq station
   end
+
+
+
+  it 'can touch in' do
+
+    subject.top_up(1)
+    subject.touch_in(station)
+      expect(subject).to be_in_journey
+  end
+end
+
 
 describe '#touch_out' do
 
   before :each do
     subject.top_up(1)
-    subject.touch_in
+    subject.touch_in(station)
   end
   it 'can touch out' do
     subject.touch_out
@@ -34,7 +50,7 @@ describe '#touch_out' do
 end
 
   it "won't touch in if below minimum balance" do
-    expect{subject.touch_in}.to raise_error 'Insufficient funds for jouney'
+    expect{subject.touch_in(station)}.to raise_error 'Insufficient funds for jouney'
   end
 
   describe 'top_up' do
@@ -51,11 +67,5 @@ end
     end
   end
 
-  describe '#deduct' do
-    it 'deducts an amount from the balance' do
-      subject.top_up(10)
-      expect{subject.deduct 5}.to change{subject.balance}.by -5
-    end
-  end
 
 end
