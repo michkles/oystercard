@@ -32,13 +32,19 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'varifies that user is in journey after touching in' do
+      subject = Oystercard.new(10)
       subject.touch_in
       expect(subject).to be_in_journey
+    end
+
+    it "checks there is enough balance to pay for fare" do
+        expect { subject.touch_in }.to raise_error "Insufficient funds to travel"
     end
   end
 
   describe '#touch_out' do
     it "verifies that a user is NOT in journey after touching out" do
+      subject = Oystercard.new(10)
       subject.touch_in
       subject.touch_out
       expect(subject).not_to be_in_journey
