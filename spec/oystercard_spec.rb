@@ -3,10 +3,9 @@ require 'spec_helper'
 describe Oystercard do
 
     let(:station) {double :station}
+    let(:entry_station) {double :entry_station}
+    let(:exit_station)  {double :exit_station}
 
-  it 'has a balance of zero' do
-    expect(subject.balance).to eq(0)
-  end
 
   it 'is not in a journey' do
     expect(subject).not_to be_in_journey
@@ -18,33 +17,28 @@ describe '#touch_in' do
   it 'records the entry station' do
     subject.top_up(1)
     subject.touch_in(station)
-    expect(subject.start_station).to eq station
+    expect(subject.entry_station).to eq station
   end
 
-
-
-  it 'can touch in' do
-
-    subject.top_up(1)
-    subject.touch_in(station)
-      expect(subject).to be_in_journey
-  end
 end
-
 
 describe '#touch_out' do
 
   before :each do
-    subject.top_up(1)
+    subject.top_up(5)
     subject.touch_in(station)
+    subject.touch_out(station)
   end
   it 'can touch out' do
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+    expect(subject.in_journey).to be false
+  end
+
+  it 'stores the exit station' do
+    expect(subject.exit_station).to eq station
   end
 
   it 'deducts the correct money after the journey' do
-    expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_BALANCE)
+    expect { subject.touch_out(station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_BALANCE)
   end
 
 end
@@ -57,9 +51,7 @@ end
     before :each do
       @balance = Oystercard::MAXIMUM_BALANCE
     end
-    it 'can top up the balance' do
-      expect{subject.top_up(1)}.to change{subject.balance}.by 1
-    end
+
 
     it 'raises an exception if maximum balance is exceeded' do
       subject.top_up(@balance)
