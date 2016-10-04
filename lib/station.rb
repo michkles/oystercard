@@ -1,9 +1,10 @@
 class Station
 
-  attr_reader :location
+  attr_reader :zone, :name
 
-  def initialize(location = "King's Cross")
-    @location = location
+  def initialize(name, zone)
+    @zone = zone
+    @name = name
   end
 
 end
