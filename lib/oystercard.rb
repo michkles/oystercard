@@ -5,7 +5,7 @@ class Oystercard
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
 
-attr_reader :balance, :entry_station, :exit_station, :in_journey
+attr_reader :balance, :entry_station, :exit_station, :in_journey, :journeys
   def initialize
     @balance = 0
     @in_journey = false
@@ -40,7 +40,7 @@ end
 private
 
   def journey
-    @journeys.push({@entry_station => @exit_station })
+    @journeys.push({entry_station: entry_station, exit_station: exit_station})
     @in_journey = false
   end
 
