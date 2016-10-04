@@ -1,4 +1,5 @@
 require './lib/station.rb'
+require './lib/journey.rb'
 
 class Oystercard
 
