@@ -1,6 +1,8 @@
+require './lib/station.rb'
+
 class Oystercard
 
-  attr_reader :balance, :in_journey
+  attr_reader :balance, :in_journey, :entry_station
 
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
@@ -19,9 +21,10 @@ class Oystercard
     @in_journey
   end
 
-  def touch_in
+  def touch_in(station_name)
     fail "Insufficient funds to travel" if @balance < MINIMUM_FARE
     @in_journey = true
+    @entry_station = station_name
   end
 
   def touch_out
