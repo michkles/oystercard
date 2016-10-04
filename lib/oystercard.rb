@@ -3,7 +3,7 @@ require './lib/journey.rb'
 
 class Oystercard
 
-  attr_reader :balance, :entry_station, :journey_history
+  attr_reader :balance
 
 
   MAXIMUM_BALANCE = 90
@@ -11,7 +11,6 @@ class Oystercard
 
   def initialize(balance = 0)
     @balance = balance
-    @journey_history = []
   end
 
   def top_up(amount)
@@ -21,30 +20,18 @@ class Oystercard
 
   def touch_in(station_name)
     fail "Insufficient funds to travel" if @balance < MINIMUM_FARE
-    @entry_station = station_name
+    journey.start(station_name)
   end
 
   def touch_out(station_name)
     deduct(MINIMUM_FARE)
-    record_journey(@entry_station, station_name)
-    reset_journey
-  end
-
-  def in_journey?
-    @entry_station == nil ? false : true
+    journey.record_journey(station_name)
   end
 
   private
 
-  def reset_journey
-     @entry_station = nil
-  end
-
-  def record_journey(station_in, station_out)
-    @journey_history << {in: station_in, out: station_out}
-  end
-
-  def deduct(amount)
+  def deduct(amount) ###
     @balance -= amount
   end
+
 end
