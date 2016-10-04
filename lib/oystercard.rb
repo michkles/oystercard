@@ -18,10 +18,6 @@ class Oystercard
     @balance += amount
   end
 
-  def in_journey?
-    @entry_station == nil ? false : true
-  end
-
   def touch_in(station_name)
     fail "Insufficient funds to travel" if @balance < MINIMUM_FARE
     @entry_station = station_name
@@ -29,16 +25,25 @@ class Oystercard
 
   def touch_out(station_name)
     deduct(MINIMUM_FARE)
-    @exit_station = station_name
-    journey = {in: @entry_station, out: @exit_station}
-    @journey_history << journey
-    @entry_station = nil
-    @exit_station = nil
+    record_journey(@entry_station, station_name)
+    reset_journey
+  end
+
+  def in_journey?
+    @entry_station == nil ? false : true
   end
 
   private
 
-    def deduct(amount)
-      @balance -= amount
-    end
+  def reset_journey
+     @entry_station = nil
+  end
+
+  def record_journey(station_in, station_out)
+    @journey_history << {in: station_in, out: station_out}
+  end
+
+  def deduct(amount)
+    @balance -= amount
+  end
 end
