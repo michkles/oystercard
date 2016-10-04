@@ -1,26 +1,21 @@
 require 'spec_helper'
 
 describe Oystercard do
+
+  let(:card) {Oystercard.new(Oystercard::MINIMUM_FARE)}
+
   it 'has a balance of zero' do
     expect(subject.balance).to eq(0)
   end
 
   describe '#top_up' do
     it 'can top up the balance' do
-      expect { subject.top_up(10) }.to change{ subject.balance }.by 10
+      expect { subject.top_up(Oystercard::MINIMUM_FARE) }.to change{ subject.balance }.by Oystercard::MINIMUM_FARE
     end
 
     it 'should raise error if maximum balance is exceeded' do
-      maximum_balance = Oystercard::MAXIMUM_BALANCE
-      subject.top_up(maximum_balance)
-      expect { subject.top_up(1) }.to raise_error "Maximum balance exceeded. Maximum balance allowed is #{maximum_balance}"
-    end
-  end
-
-  describe '#deduct' do
-    it 'should deduct amount from balance' do
-      subject.top_up(10)
-      expect { subject.deduct(5) }.to change{ subject.balance }.by -5
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      expect { subject.top_up(Oystercard::MINIMUM_FARE) }.to raise_error "Maximum balance exceeded. Maximum balance allowed is #{Oystercard::MAXIMUM_BALANCE}"
     end
   end
 
@@ -32,9 +27,8 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'varifies that user is in journey after touching in' do
-      subject = Oystercard.new(10)
-      subject.touch_in
-      expect(subject).to be_in_journey
+      card.touch_in
+      expect(card).to be_in_journey
     end
 
     it "checks there is enough balance to pay for fare" do
@@ -44,10 +38,14 @@ describe Oystercard do
 
   describe '#touch_out' do
     it "verifies that a user is NOT in journey after touching out" do
-      subject = Oystercard.new(10)
-      subject.touch_in
-      subject.touch_out
-      expect(subject).not_to be_in_journey
+      card.touch_in
+      card.touch_out
+      expect(card).not_to be_in_journey
+    end
+
+    it 'check that user has been charged for the journey on touch out' do
+      card.touch_in
+      expect { card.touch_out }.to change{ card.balance }.by(-1*Oystercard::MINIMUM_FARE)
     end
   end
 
