@@ -11,15 +11,27 @@ describe Oystercard do
   end
 
   it 'can touch in' do
+    subject.top_up(1)
     subject.touch_in
     expect(subject).to be_in_journey
   end
 
-  it 'can touch out' do
+describe '#touch_out' do
+
+  before :each do
+    subject.top_up(1)
     subject.touch_in
+  end
+  it 'can touch out' do
     subject.touch_out
     expect(subject).not_to be_in_journey
   end
+
+  it 'deducts the correct money after the journey' do
+    expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_BALANCE)
+  end
+
+end
 
   it "won't touch in if below minimum balance" do
     expect{subject.touch_in}.to raise_error 'Insufficient funds for jouney'
