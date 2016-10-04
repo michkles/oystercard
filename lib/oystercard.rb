@@ -2,13 +2,15 @@ require './lib/station.rb'
 
 class Oystercard
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journey_history
+
 
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
 
   def initialize(balance = 0)
     @balance = balance
+    @journey_history = []
   end
 
   def top_up(amount)
@@ -25,9 +27,13 @@ class Oystercard
     @entry_station = station_name
   end
 
-  def touch_out
+  def touch_out(station_name)
     deduct(MINIMUM_FARE)
+    @exit_station = station_name
+    journey = {in: @entry_station, out: @exit_station}
+    @journey_history << journey
     @entry_station = nil
+    @exit_station = nil
   end
 
   private
