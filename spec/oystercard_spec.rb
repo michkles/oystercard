@@ -1,4 +1,4 @@
-require 'oystercard'
+require 'spec_helper'
 
 describe Oystercard do
   it 'has a balance of zero' do
@@ -26,14 +26,22 @@ describe Oystercard do
 
   describe '#in_journey?' do
     it 'verifies that users is NOT in a journey' do
-      expect(subject.in_journey?).to eq false
+      expect(subject).not_to be_in_journey
     end
   end
 
   describe '#touch_in' do
-    it '' do
+    it 'varifies that user is in journey after touching in' do
       subject.touch_in
-      expect(subject.in_journey?).to eq true
+      expect(subject).to be_in_journey
+    end
+  end
+
+  describe '#touch_out' do
+    it "verifies that a user is NOT in journey after touching out" do
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
     end
   end
 
