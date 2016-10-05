@@ -32,7 +32,7 @@ class Oystercard
   end
 
   def fare
-    journey.any_nil_stations? ? 6 : 1
+    journey.incomplete_journey? ? 6 : 1
   end
 
   private

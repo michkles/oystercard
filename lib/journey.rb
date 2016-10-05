@@ -1,11 +1,9 @@
-require_relative 'journey_log'
-
 class Journey
 
-  attr_reader :entry_station, :exit_station, :in_journey, :journey_log
+  attr_reader :in_journey, :journey_log, :entry_station, :exit_station
 
   def initialize(entry_station = nil, exit_station = nil)
-    @journey_log = JourneyLog.new 
+    @journey_log = JourneyLog.new
     @entry_station = entry_station
     @exit_station = exit_station
   end
@@ -32,7 +30,7 @@ class Journey
     @entry_station != nil ? true : false
   end
 
-  def any_nil_stations?
+  def incomplete_journey?
     @entry_station == nil || @exit_station == nil
   end
 end
