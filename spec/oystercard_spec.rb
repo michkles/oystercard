@@ -14,7 +14,6 @@ describe Oystercard do
   end
 
 
-
   describe '#top_up' do
 
     it 'can top up the balance' do
@@ -57,5 +56,12 @@ describe Oystercard do
     end
   end
 
+
+  describe '#fare' do
+
+    it "should return the minimum fare or the penalty fare" do
+
+    end
+  end
 
 end
