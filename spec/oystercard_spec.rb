@@ -6,11 +6,17 @@ describe Oystercard do
   let(:station1) {double(:station)}
   let(:station2) {double(:station)}
 
-  it 'has a balance of zero' do
-    expect(subject.balance).to eq(0)
-  end
+  describe '#initialize' do
+
+    it 'has a balance of zero' do
+      expect(subject.balance).to eq(0)
+    end
+  end 
+  
+
 
   describe '#top_up' do
+
     it 'can top up the balance' do
       expect { subject.top_up(Oystercard::MINIMUM_FARE) }.to change{ subject.balance }.by Oystercard::MINIMUM_FARE
     end
@@ -21,36 +27,32 @@ describe Oystercard do
     end
   end
 
-  describe '#touch_in' do
 
+  describe '#touch_in' do
 
     it "checks there is enough balance to pay for fare" do
         expect { subject.touch_in(station1) }.to raise_error "Insufficient funds to travel"
     end
-
-    it "stores the location of the check in station1 on the card" do
-      card.touch_in(station1)
-      expect(@journey.start(station1)).to eq(station1)
-    end
-
-    it "stores a whole journey in an array of hashes" do
-      card.touch_in(station1)
-      card.touch_out(station2)
-      expect(card.journey_history).to match_array([in: station1, out: station2])
-    end
   end
+
 
   describe '#touch_out' do
-    it "verifies that a user is NOT in journey after touching out" do
-      card.touch_in(station1)
-      card.touch_out(station2)
-      expect(card).not_to be_in_journey
-    end
 
-    it 'check that user has been charged for the journey on touch out' do
+    it 'check that user has been deducted for the journey on touch out' do
       card.touch_in(station1)
-      expect { card.touch_out(station2) }.to change{ card.balance }.by(-1*Oystercard::MINIMUM_FARE)
+      expect { card.touch_out(station2) }.to change{ card.balance }.by(-Oystercard::MINIMUM_FARE)
     end
   end
+
+
+#  describe '#penalty' do
+#
+#    it 'when touching_in twice without out in between deduct penalty fare' do
+#      card.touch_in(station1)
+#      expect(card.touch_in(station1)).to change{card.balance}.by Oystercard::PEN_FARE
+#    end
+
+#  end
+
 
 end

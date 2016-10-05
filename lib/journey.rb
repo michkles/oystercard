@@ -1,9 +1,9 @@
 class Journey
 
-  attr_reader :entry_station, :exit_station, :in_journey
+  attr_reader :entry_station, :exit_station, :in_journey, :journey_log
 
   def initialize(entry_station = nil, exit_station = nil)
-    @journey_history = []
+    @journey_log = []
     @entry_station = entry_station
     @exit_station = exit_station
   end
@@ -18,10 +18,11 @@ class Journey
 
   def reset_journey
      @entry_station = nil
+     @exit_station = nil
   end
 
   def record_journey
-    @journey_history << {in: @entry_station, out: @exit_station}
+    @journey_log << {in: @entry_station, out: @exit_station}
     reset_journey
   end
 
@@ -29,3 +30,4 @@ class Journey
     @entry_station != nil ? true : false
   end
 end
+
