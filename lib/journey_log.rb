@@ -1,3 +1,5 @@
+require_relative 'journey'
+
 class JourneyLog
 
   attr_reader :journey_history
