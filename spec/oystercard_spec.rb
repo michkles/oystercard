@@ -11,8 +11,8 @@ describe Oystercard do
     it 'has a balance of zero' do
       expect(subject.balance).to eq(0)
     end
-  end 
-  
+  end
+
 
 
   describe '#top_up' do
@@ -49,9 +49,12 @@ describe Oystercard do
 
     it 'when touching_in twice without out in between deduct penalty fare' do
       card.touch_in(station1)
-      expect(card.touch_in(station1)).to change{card.balance}.by Oystercard::PEN_FARE
+      expect{ card.touch_in(station1) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
     end
 
+    it "when touching out without having touched in deduct penalty fare" do
+      expect { card.touch_out(station1) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
+    end
   end
 
 
