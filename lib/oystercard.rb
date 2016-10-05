@@ -1,16 +1,17 @@
-require './lib/station.rb'
-require './lib/journey.rb'
+require_relative 'station'
+require_relative 'journey'
 
 class Oystercard
 
-  attr_reader :balance
-
+  attr_reader :balance, :entry_station
+  attr_accessor :journey
 
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
 
   def initialize(balance = 0)
     @balance = balance
+    @journey = Journey.new
   end
 
   def top_up(amount)

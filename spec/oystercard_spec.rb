@@ -21,17 +21,8 @@ describe Oystercard do
     end
   end
 
-  describe '#in_journey?' do
-    it 'verifies that users is NOT in a journey' do
-      expect(subject).not_to be_in_journey
-    end
-  end
-
   describe '#touch_in' do
-    it 'varifies that user is in journey after touching in' do
-      card.touch_in(station1)
-      expect(card).to be_in_journey
-    end
+
 
     it "checks there is enough balance to pay for fare" do
         expect { subject.touch_in(station1) }.to raise_error "Insufficient funds to travel"
@@ -39,7 +30,7 @@ describe Oystercard do
 
     it "stores the location of the check in station1 on the card" do
       card.touch_in(station1)
-      expect(card.entry_station).to eq(station1)
+      expect(@journey.start(station1)).to eq(station1)
     end
 
     it "stores a whole journey in an array of hashes" do
