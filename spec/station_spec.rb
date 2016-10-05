@@ -2,7 +2,7 @@ require 'station'
 
 describe Station do
 
-subject {Station.new('tadas', 1)}
+subject {Station.new({name: 'tadas', zone: 1})}
 
   it 'sets a zone' do
     expect(subject.zone).to eq 1
