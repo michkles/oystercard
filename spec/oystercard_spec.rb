@@ -45,14 +45,14 @@ describe Oystercard do
   end
 
 
-#  describe '#penalty' do
-#
-#    it 'when touching_in twice without out in between deduct penalty fare' do
-#      card.touch_in(station1)
-#      expect(card.touch_in(station1)).to change{card.balance}.by Oystercard::PEN_FARE
-#    end
+  describe '#penalty' do
 
-#  end
+    it 'when touching_in twice without out in between deduct penalty fare' do
+      card.touch_in(station1)
+      expect(card.touch_in(station1)).to change{card.balance}.by Oystercard::PEN_FARE
+    end
+
+  end
 
 
 end
