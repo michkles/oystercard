@@ -2,9 +2,9 @@ require 'journey'
 require 'station'
 
 describe Journey do
-  let(:station) { double :station, zone: 1 }
 
-  # let (:station) { Station.new(:tadas, 1)}
+  let(:station) { double :station, zone: 1 }
+  subject {Journey.new(station)}
 
   describe 'Initialization' do
     it 'has a default penalty fare' do
@@ -20,26 +20,29 @@ describe Journey do
  end
 
   context 'given an entry station' do
-    subject {Journey.new(name: station)}
 
     it 'has an entry station' do
-      # allow(station).to receive(:name).and_return(:tadas)
-      p station
-      p subject
       expect(subject.entry_station).to eq station
     end
-    it 'returns a penalty fare if no entry station' do
 
+    context 'given an exit station' do
+      let(:station2) { double :station2}
+
+      before do
+        subject.finish(station2)
+      end
+
+      it 'calculates a fare' do
+        expect(subject.calculate_fare).to eq 1
+      end
+
+      it 'knows that a journey is complete' do
+        expect(subject).to be_complete
+      end
     end
   end
 
-  #
-  # let (:station1) { double(:tadas)}
-  # let (:station2) { double(:frances)}
-  #
-  # describe '#finish' do
-  #   it 'returns a journey' do
-  #     expect(subject.finish(station))to eq subject
-  #   end
-  # end
+
+
+
 end
