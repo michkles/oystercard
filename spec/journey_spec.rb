@@ -14,7 +14,7 @@ describe Journey do
 
   it 'varifies that user is in journey after touching in' do
     card.touch_in(station1)
-    expect(card).to be_in_journey
+    expect(card.journey.in_journey).to be_in_journey
   end
 
 end
