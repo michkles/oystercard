@@ -10,9 +10,9 @@ class Oystercard
   MINIMUM_FARE = 1
   PENALTY_FARE = 6
 
-  def initialize(balance = 0)
+  def initialize(balance = 0, journey = Journey.new)
     @balance = balance
-    @journey = Journey.new
+    @journey = journey
   end
 
   def top_up(amount)
@@ -26,13 +26,15 @@ class Oystercard
   end
 
   def touch_out(station_name)
+
     journey.end(station_name)
     deduct(fare)
     journey.record_journey
+
   end
 
   def fare
-    journey.incomplete_journey? ? 6 : 1
+    journey.incomplete_journey? ? PENALTY_FARE : MINIMUM_FARE
   end
 
   private
