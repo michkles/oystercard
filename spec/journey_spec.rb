@@ -3,8 +3,11 @@ require 'spec_helper'
 describe Journey do
 
   let(:card) {Oystercard.new(Oystercard::MINIMUM_FARE)}
-  let(:station1) {double(:station)}
-  let(:station2) {double(:station)}
+  let(:station1) {double(:station, zone: 1)}
+  let(:station2) {double(:station, zone: 1)}
+  let(:entry_station) {double(:station, zone: 1)}
+  let(:exit_station) {double(:station, zone: 3)}
+
 
   describe '#in_journey?' do
     it 'verifies that users is NOT in a journey' do
@@ -30,5 +33,10 @@ describe Journey do
     expect(card.journey.entry_station).to eq(station1)
   end
 
+  it 'should charge a correct fare based on the zones travelled' do
+    subject.start(entry_station)
+    subject.end(exit_station)
+    expect(subject.fare).to eq 3
+  end
 
 end

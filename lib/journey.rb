@@ -4,9 +4,9 @@ class Journey
   MINIMUM_FARE = 1
   PENALTY_FARE = 6
 
-  attr_reader :in_journey, :entry_station, :exit_station, :fare #:journey_log,
+  attr_reader :in_journey, :entry_station, :exit_station, :fare, :journey,
 
-  def initialize(entry_station = nil, exit_station = nil)
+  def initialize(entry_station, exit_station)
     #@journey_log = []
     @entry_station = entry_station
     @exit_station = exit_station
@@ -39,7 +39,8 @@ class Journey
   end
 
   def fare
-    incomplete_journey? ? PENALTY_FARE : MINIMUM_FARE
+    fare = (@entry_station.zone - @exit_station.zone).abs + 1
+    # incomplete_journey? ? PENALTY_FARE : MINIMUM_FARE
   end
 
 end

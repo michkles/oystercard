@@ -3,8 +3,8 @@ require 'spec_helper'
 describe JourneyLog do
 
   let(:card) {Oystercard.new(Oystercard::MINIMUM_FARE)}
-  let(:station1) {double(:station)}
-  let(:station2) {double(:station)}
+  let(:station1) {double(:station, zone: 1)}
+  let(:station2) {double(:station, zone: 1)}
 
   it "stores a whole journey in an array of hashes" do
     card.touch_in(station1)

@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Oystercard do
 
   let(:card) {Oystercard.new(Oystercard::MINIMUM_FARE)}
-  let(:station1) {double(:station)}
-  let(:station2) {double(:station)}
+  let(:station1) {double(:station, zone: 1)}
+  let(:station2) {double(:station, zone: 1)}
 
   describe '#initialize' do
 
@@ -30,6 +30,7 @@ describe Oystercard do
   describe '#touch_in' do
 
     it "checks there is enough balance to pay for fare" do
+
         expect { subject.touch_in(station1) }.to raise_error "Insufficient funds to travel"
     end
   end
@@ -38,8 +39,9 @@ describe Oystercard do
   describe '#touch_out' do
 
     it 'check that user has been deducted for the journey on touch out' do
+
       card.touch_in(station1)
-      expect { card.touch_out(station2) }.to change{ card.balance }.by(-Oystercard::MINIMUM_FARE)
+      expect { card.touch_out(station2) }.to change{ card.balance }.by(-1)
     end
   end
 
@@ -47,8 +49,10 @@ describe Oystercard do
   describe '#penalty' do
 
     it 'when touching_in twice without out in between deduct penalty fare' do
-      card.touch_in(station1)
-      expect{ card.touch_in(station1) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
+      station3 = Station.new('s3', 1)
+      card.touch_in(station3)
+      p station3
+      expect{ card.touch_in(station3) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
     end
 
     it "when touching out without having touched in deduct penalty fare" do
@@ -62,6 +66,11 @@ describe Oystercard do
     it "should return the minimum fare or the penalty fare" do
 
     end
+  end
+
+  def update_zones(entry_zone, exit_zone)
+    allow(station1).to receive(:zone).and_return(entry_zone)
+    allow(station2).to receive(:zone).and_return(exit_zone)
   end
 
 end
