@@ -1,6 +1,10 @@
 class Journey
 
-  attr_reader :in_journey, :entry_station, :exit_station #:journey_log,
+  MAXIMUM_BALANCE = 90
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
+
+  attr_reader :in_journey, :entry_station, :exit_station, :fare #:journey_log,
 
   def initialize(entry_station = nil, exit_station = nil)
     #@journey_log = []
@@ -33,4 +37,9 @@ class Journey
   def incomplete_journey?
     @entry_station == nil || @exit_station == nil
   end
+
+  def fare
+    incomplete_journey? ? PENALTY_FARE : MINIMUM_FARE
+  end
+
 end
