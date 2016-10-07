@@ -49,10 +49,8 @@ describe Oystercard do
   describe '#penalty' do
 
     it 'when touching_in twice without out in between deduct penalty fare' do
-      station3 = Station.new('s3', 1)
-      card.touch_in(station3)
-      p station3
-      expect{ card.touch_in(station3) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
+      card.touch_in(station1)
+      expect{ card.touch_in(station1) }.to change{card.balance}.by(-Oystercard::PENALTY_FARE)
     end
 
     it "when touching out without having touched in deduct penalty fare" do
